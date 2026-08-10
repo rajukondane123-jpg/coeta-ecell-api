@@ -71,7 +71,7 @@ def chat_with_bot(request: ChatRequest):
     if not BOT_IS_ACTIVE:
         return {"reply": "The E-Cell chatbot is currently offline for maintenance."}
 
-    prompt = f"You are the official chatbot for the COETA E-Cell. Keep answers short. Question: {request.me>
+    prompt = f"You are the official chatbot for the COETA E-Cell. Keep answers short. Question: {request.me}"
     contents = [prompt]
     if document:
         contents.append(document)
