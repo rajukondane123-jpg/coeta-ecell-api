@@ -93,7 +93,7 @@ def chat_with_bot(request: ChatRequest):
 
         # Smart error interception to diagnose the exact issue on the frontend
         if "limit: 0" in error_msg:
-            return {"reply": "CRITICAL ERROR: Your API key quota is 0. You are using an invalid 'AQ.' token>
+            return {"reply": "CRITICAL ERROR: Your API key quota is 0. You are using an invalid 'AQ.' token."}
         elif "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
             return {"reply": "Google API speed limit reached! Please wait exactly 60 seconds and try again.>
         elif "API_KEY_INVALID" in error_msg:
