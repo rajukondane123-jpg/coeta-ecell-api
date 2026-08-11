@@ -8,17 +8,14 @@ from google.genai import Client
 # ---------------------------------------------------------
 # 1. LOGGING & SYSTEM SETUP
 # ---------------------------------------------------------
-# This prints detailed color-coded server logs in your Termux window
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:     %(message)s")
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------
 # 2. GOOGLE API CONFIGURATION
 # ---------------------------------------------------------
-# IMPORTANT: Delete "PASTE_YOUR_AIzaSy_KEY_HERE" and paste your real key.
-# A valid Google API key WILL ALWAYS start with "AIzaSy".
-# Do not use tokens starting with "AQ." or you will get a quota of 0.
-os.environ["GEMINI_API_KEY"] = "PASTE API KEY HERE"
+# The Google SDK will now automatically detect the GEMINI_API_KEY 
+# that you safely saved in your Render Environment Variables dashboard!
 client = Client()
 document = None
 
@@ -70,7 +67,8 @@ def chat_with_bot(request: ChatRequest):
     if not BOT_IS_ACTIVE:
         return {"reply": "The E-Cell chatbot is currently offline for maintenance."}
 
-    prompt = f"You are the official chatbot for the COETA E-Cell. Keep answers short. Question: {request.me}"
+    # FIXED: Changed request.me to request.message
+    prompt = f"You are the official chatbot for the COETA E-Cell. Keep answers short. Question: {request.message}"
     contents = [prompt]
     if document:
         contents.append(document)
@@ -90,7 +88,6 @@ def chat_with_bot(request: ChatRequest):
         error_msg = str(e)
         logger.error(f"Failed to fetch AI response: {error_msg}")
 
-        # Smart error interception to diagnose the exact issue on the frontend
         if "limit: 0" in error_msg:
             return {"reply": "CRITICAL ERROR: Your API key quota is 0. You are using an invalid 'AQ.' token."}
         elif "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
@@ -99,3 +96,4 @@ def chat_with_bot(request: ChatRequest):
             return {"reply": "CRITICAL ERROR: Your API key is invalid or incomplete."}
         else:
             return {"reply": f"Unexpected System Error: {error_msg}"}
+            
