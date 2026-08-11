@@ -19,7 +19,6 @@ logger = logging.getLogger(__name__)
 # A valid Google API key WILL ALWAYS start with "AIzaSy".
 # Do not use tokens starting with "AQ." or you will get a quota of 0.
 os.environ["GEMINI_API_KEY"] = "PASTE API KEY HERE"
-
 client = Client()
 document = None
 
